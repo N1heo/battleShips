@@ -1,0 +1,10 @@
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\bin\Debug\battleShipsFinalProject.exe.config
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\bin\Debug\battleShipsFinalProject.exe
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\bin\Debug\battleShipsFinalProject.pdb
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.Form1.resources
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.Properties.Resources.resources
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.csproj.GenerateResource.cache
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.exe
+C:\Users\user\source\repos\battleShipsFinalProject\battleShipsFinalProject\obj\Debug\battleShipsFinalProject.pdb

@@ -93,6 +93,9 @@ namespace battleShipsFinalProject
             InitField();
             bot = new Bot(botsGameField, gameField, botsButtons, playerButtons);
             botsGameField = bot.ConfigureShips();
+            bigShipCounter = 0;
+            mediumShipCounter = 0;
+            smallShipCounter = 0;
         }
 
         private void InitField()
@@ -219,20 +222,20 @@ namespace battleShipsFinalProject
                 }
 
                 Label map1 = new Label();
-                map1.Text = "Карта игрока";
-                map1.Location = new Point(arrSize * cellSize / 2, arrSize * cellSize + 50);
+                map1.Text = "Your field";
+                map1.Location = new Point(arrSize * cellSize / 2 -30, arrSize * cellSize + 50);
                 this.Controls.Add(map1);
 
                 Label map2 = new Label();
-                map2.Text = "Карта противника";
-                map2.Location = new Point(350 + arrSize * cellSize / 2, arrSize * cellSize + 50);
+                map2.Text = "Bots field";
+                map2.Location = new Point(350 + arrSize * cellSize / 2 + 200, arrSize * cellSize + 50);
                 this.Controls.Add(map2);
 
                 Button startButton = new Button();
-                startButton.Text = "Начать";
-                startButton.AutoSize = true;
+                startButton.Text = "Start";
+                startButton.Size = new Size(100, 40);
                 startButton.Click += new EventHandler(Start);
-                startButton.Location = new Point(arrSize * cellSize + 20, 350);
+                startButton.Location = new Point(arrSize * cellSize + 50, 350);
                 this.Controls.Add(startButton);
 
 
@@ -248,7 +251,6 @@ namespace battleShipsFinalProject
             int rows = grid.GetLength(0);
             int cols = grid.GetLength(1);
 
-            // Check all neighbors (up, down, left, right, upRight, etc..)
             int[] dx = { -1, -1, +1, +1,  0, -1,  0, +1};
             int[] dy = { -1, +1, -1, +1, -1 , 0, +1,  0};
 
@@ -257,14 +259,12 @@ namespace battleShipsFinalProject
                 int newRow = row + dx[i];
                 int newCol = col + dy[i];
 
-                // Check if the neighbor is equal to the target number or 0
                 if (grid[newRow, newCol] != targetNumber && grid[newRow, newCol] != 0)
                 {
                     return false;
                 }
             }
 
-            // All neighbors are equal to the target number or 0
             return true;
         }
 
@@ -309,7 +309,7 @@ namespace battleShipsFinalProject
             }
             else
             {
-                noShipsLeft.ShowBalloonTip(2000, "Error", $" No {"No Ships Of This Size Left"} ({DateTime.Now:h:mm:ss tt})", ToolTipIcon.Warning);
+                noShipsLeft.ShowBalloonTip(2000, "Error", $" {"No Ships Of This Size Left"} ({DateTime.Now:h:mm:ss tt})", ToolTipIcon.Warning);
             }
             
         }
@@ -321,13 +321,42 @@ namespace battleShipsFinalProject
             if (!playerTurn)
                 bot.Shoot();
 
-            if (!CheckIfMapIsNotEmpty())
+            if (CheckIfMapIsNotEmpty() == 1)
             {
-                this.Controls.Clear();
-                Init();
+                DialogResult result = MessageBox.Show("Do you wish to restart?", "You lost!", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                
+                if (result == DialogResult.Yes)
+                {
+                    MessageBox.Show("Restarting the game...", "Restart", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Controls.Clear();
+                    Init();
+                }
+                else if (result == DialogResult.No)
+                {
+                    MessageBox.Show("Exiting the game...", "Exit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                
+            } else if(CheckIfMapIsNotEmpty() == 2)
+            {
+                DialogResult result = MessageBox.Show("Do you wish to restart?", "You won!", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+
+                if (result == DialogResult.Yes)
+                {
+                    MessageBox.Show("Restarting the game...", "Restart", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Controls.Clear();
+                    Init();
+                }
+                else if (result == DialogResult.No)
+                {
+                    MessageBox.Show("Exiting the game...", "Exit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
             }
         }
-        public bool CheckIfMapIsNotEmpty()
+        public int CheckIfMapIsNotEmpty()
         {
             bool isEmpty1 = true;
             bool isEmpty2 = true;
@@ -341,9 +370,11 @@ namespace battleShipsFinalProject
                         isEmpty2 = false;
                 }
             }
-            if (isEmpty1 || isEmpty2)
-                return false;
-            else return true;
+            if (isEmpty1) { return 1; }
+            else if (isEmpty2) { return 2; }
+            else {
+                return 0;
+            } 
         }
 
         public bool Shoot(int[,] map, Button pressedButton)
@@ -362,6 +393,10 @@ namespace battleShipsFinalProject
                     map[row, col] = 0;
                     pressedButton.BackColor = Color.Blue;
                     pressedButton.Text = "X";
+                    if(CheckNeighbors(map, row, col, 0))
+                    {
+                        DialogResult result = MessageBox.Show("Ship flooded!", "The ship was flooded!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
